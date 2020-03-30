@@ -84,6 +84,30 @@ func runPortServer(info *portProxyInfo, cfg *config) {
 	waitActiveConn.Wait()
 }
 
+func runSocks5Server(info *socks5Info, cfg *config) {
+	listenHost := "localhost"
+	if info.EnableLAN {
+		listenHost = "0.0.0.0"
+	}
+	listenAddr := fmt.Sprintf("%v:%v", listenHost, info.ListenPort)
+
+	l, err := net.Listen("tcp4", listenAddr)
+	if err != nil {
+		log.Get().WithField("addr", listenAddr).WithError(err).Error("listen socks5 port failed")
+		return
+	}
+
+	for {
+		conn, err := l.Accept()
+		if err != nil {
+			break
+		}
+		conn.Close()
+
+		// todo
+	}
+}
+
 func runAsVisitor(cfg *config) {
 	var wg sync.WaitGroup
 	size := len(cfg.PortProxy)

@@ -22,6 +22,11 @@ type portProxyInfo struct {
 	ChannelName string `json:"channelName"`
 }
 
+type socks5Info struct {
+	ListenPort uint16 `json:"listenPort"`
+	EnableLAN  bool   `json:"enableLAN"`
+}
+
 type config struct {
 	Mode      string          `json:"mode"` // server/agent/visitor
 	Addr      string          `json:"addr"` // ip:port
@@ -35,6 +40,9 @@ type config struct {
 
 	// server only
 	TotpList []totpInfo `json:"totpList"`
+
+	// visitor only
+	Socks5 socks5Info `json:"socks5"`
 }
 
 func readJSON(path string) ([]byte, error) {
